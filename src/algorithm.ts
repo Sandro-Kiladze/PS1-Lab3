@@ -34,9 +34,35 @@ export function toBucketSets(buckets: BucketMap): Array<Set<Flashcard>> {
 export function getBucketRange(
   buckets: Array<Set<Flashcard>>
 ): { minBucket: number; maxBucket: number } | undefined {
-  // TODO: Implement this function
-  throw new Error("Implement me!");
+  // Initialize variables to track the minimum and maximum bucket indices
+  let minBucket: number | undefined = undefined;
+  let maxBucket: number | undefined = undefined;
+
+  // Iterate through the array of buckets
+  for (let i = 0; i < buckets.length; i++) {
+    const bucket = buckets[i];
+
+    // Ensure that bucket is not undefined and contains flashcards
+    if (bucket && bucket.size > 0) {
+      // Update minBucket if it's not set or if i is smaller than the current min
+      if (minBucket === undefined || i < minBucket) {
+        minBucket = i;
+      }
+      // Update maxBucket if it's not set or if i is larger than the current max
+      if (maxBucket === undefined || i > maxBucket) {
+        maxBucket = i;
+      }
+    }
+  }
+
+  // If we found non-empty buckets, return the range, otherwise return undefined
+  if (minBucket !== undefined && maxBucket !== undefined) {
+    return { minBucket, maxBucket };
+  } else {
+    return undefined;
+  }
 }
+
 
 /**
  * Selects cards to practice on a particular day.
